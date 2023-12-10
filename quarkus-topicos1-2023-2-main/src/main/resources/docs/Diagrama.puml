@@ -1,0 +1,82 @@
+@startuml Hotel
+
+class Usuario {
+    - id: Long
+    - login: String
+    - senha: String
+}
+
+class Reserva {
+    - id: Long
+    - dataReserva: LocalDateTime
+}
+
+class Quarto {
+    - id: Long
+    - tipoQuarto: TipoQuarto
+    - nomeImagem: String
+}
+
+class Pagamento {
+    - id: Long
+    - valor: Double
+    - dataPagamento: LocalDateTime
+    - tipoPagamento: TipoPagamento
+}
+
+class Comentario {
+    - id: Long
+    - conteudo: String
+    - dataComentario: LocalDateTime
+}
+
+class Servico {
+    - id: Long
+    - nome: String
+    - descricao: String
+    - preco: Double
+}
+
+class Endereco {
+    - id: Long
+    - logradouro: String
+    - numero: String
+    - complemento: String
+    - cidade: String
+    - estado: String
+    - cep: String
+}
+
+class Perfil {
+    - id: Long
+    - nome: String
+}
+
+enum TipoPagamento {
+    - id: Long
+    - descricao: String
+}
+
+enum TipoQuarto {
+    - id: Long
+    - descricao: String
+}
+
+class Telefone {
+    - id: Long
+    - numero: String
+}
+
+Usuario "1" --> "*" Reserva
+Reserva "1" --> "1" Quarto
+Reserva "1" --> "1" Pagamento
+Usuario "*" --> "*" Comentario
+Usuario "1" --> "*" Telefone
+Usuario "1" --> "1" Endereco
+Usuario "*" --> "*" Perfil
+Quarto "1" --> "1" TipoQuarto
+Pagamento "1" --> TipoPagamento
+
+
+
+@enduml
