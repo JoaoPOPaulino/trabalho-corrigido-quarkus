@@ -12,6 +12,7 @@ import br.unitins.topicos1.form.QuartoImageForm;
 import br.unitins.topicos1.model.TipoQuarto;
 import br.unitins.topicos1.service.quarto.QuartoFileService;
 import br.unitins.topicos1.service.quarto.QuartoService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -35,6 +36,7 @@ public class QuartoResource {
     private static final Logger LOGGER = Logger.getLogger(QuartoResource.class.getName());
 
     @POST
+    @RolesAllowed({ "Admin" })
     public Response insert(@Valid QuartoDTO dto) {
         LOGGER.info("Iniciando inserção de novo quarto");
         Response response = Response.status(Response.Status.CREATED).entity(service.insert(dto)).build();
@@ -45,6 +47,7 @@ public class QuartoResource {
     @PUT
     @Transactional
     @Path("/{id}")
+    @RolesAllowed({ "Admin" })
     public Response update(@Valid QuartoDTO dto, @PathParam("id") Long id) {
         LOGGER.info("Iniciando atualização do quarto com ID: " + id);
         service.update(dto, id);
@@ -55,6 +58,7 @@ public class QuartoResource {
     @DELETE
     @Transactional
     @Path("/{id}")
+    @RolesAllowed({ "Admin" })
     public Response delete(@PathParam("id") Long id) {
         LOGGER.info("Iniciando exclusão do quarto com ID: " + id);
         service.delete(id);
@@ -63,6 +67,7 @@ public class QuartoResource {
     }
 
     @GET
+    @RolesAllowed({ "User", "Admin" })
     public Response findAll() {
         LOGGER.info("Buscando todos os quartos");
         Response response = Response.ok(service.findAll()).build();
@@ -72,6 +77,7 @@ public class QuartoResource {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({ "Admin" })
     public Response findById(@PathParam("id") Long id) {
         LOGGER.info("Buscando quarto com ID: " + id);
         QuartoResponseDTO response = service.findById(id);
@@ -81,6 +87,7 @@ public class QuartoResource {
 
     @GET
     @Path("/search/tipoQuarto/{tipoQuarto}")
+    @RolesAllowed({ "User", "Admin" })
     public Response findByTipo(@PathParam("tipoQuarto") TipoQuarto tipoQuarto) {
         LOGGER.info("Buscando quartos do tipo: " + tipoQuarto);
         Response response = Response.ok(service.findByTipo(tipoQuarto)).build();
@@ -91,6 +98,7 @@ public class QuartoResource {
     @PATCH
     @Path("{id}/upload/imagem")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @RolesAllowed({ "Admin" })
     public Response salvarImagemQuarto(@PathParam("id") Long id, @MultipartForm QuartoImageForm form) {
         LOGGER.info("Iniciando upload de imagem para o quarto com ID: " + id);
         try {
@@ -113,6 +121,7 @@ public class QuartoResource {
     @GET
     @Path("/download/imagem/{nomeImagem}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    @RolesAllowed({ "Admin" })
     public Response download(@PathParam("nomeImagem") String nomeImagem) {
         LOGGER.info("Iniciando download da imagem: " + nomeImagem);
         File file = fileService.obter(nomeImagem);

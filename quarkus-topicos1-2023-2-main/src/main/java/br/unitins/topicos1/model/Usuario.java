@@ -19,6 +19,7 @@ import jakarta.validation.constraints.NotEmpty;
 public class Usuario extends DefaultEntity {
 
     private String nome;
+    private String email;
     private String login;
     private String senha;
     private Perfil perfil;
@@ -38,6 +39,7 @@ public class Usuario extends DefaultEntity {
 
     public Usuario(UsuarioDTO dto, HashService hashService) {
         this.nome = dto.nome();
+        this.email = dto.email();
         this.login = dto.login();
         this.senha = hashService.getHashSenha(dto.senha());
         this.perfil = Perfil.valueOf(dto.idPerfil());
@@ -55,6 +57,7 @@ public class Usuario extends DefaultEntity {
 
     public void atualizarComDTO(UsuarioDTO dto, HashService hashService) {
         this.nome = dto.nome();
+        this.email = dto.email();
         this.login = dto.login();
 
         if (dto.senha() != null && !dto.senha().isEmpty()) {
@@ -121,6 +124,14 @@ public class Usuario extends DefaultEntity {
 
     public void setPerfil(Perfil perfil) {
         this.perfil = perfil;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
 }

@@ -9,6 +9,7 @@ import br.unitins.topicos1.dto.reserva.ReservaDTO;
 import br.unitins.topicos1.dto.reserva.ReservaResponseDTO;
 import br.unitins.topicos1.service.reserva.ReservaService;
 import io.smallrye.jwt.build.JwtException;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceException;
@@ -40,7 +41,9 @@ public class ReservaResource {
     private static final Logger LOGGER = Logger.getLogger(ReservaResource.class.getName());
 
     @POST
+    @RolesAllowed({ "User", "Admin" })
     public Response insert(@Valid ReservaDTO dto) {
+
         LOGGER.info("Iniciando a criação de uma nova reserva com data de início: " + dto.dataInicio());
         Response response = Response.status(Status.CREATED).entity(service.insert(dto)).build();
         LOGGER.info("Reserva criada com sucesso");
@@ -50,6 +53,7 @@ public class ReservaResource {
     @PUT
     @Transactional
     @Path("/{id}")
+    @RolesAllowed({ "User", "Admin" })
     public Response update(@Valid ReservaDTO dto, @PathParam("id") Long id) {
         LOGGER.info("Iniciando atualização da reserva com ID: " + id);
         service.update(dto, id);
@@ -60,6 +64,7 @@ public class ReservaResource {
     @DELETE
     @Transactional
     @Path("/{id}")
+    @RolesAllowed({ "User", "Admin" })
     public Response delete(@PathParam("id") Long id) {
         LOGGER.info("Iniciando exclusão da reserva com ID: " + id);
         service.delete(id);
@@ -68,6 +73,7 @@ public class ReservaResource {
     }
 
     @GET
+    @RolesAllowed({ "Admin" })
     public Response findAll() {
         LOGGER.info("Buscando todas as reservas");
         Response response = Response.ok(service.findByAll()).build();
@@ -77,6 +83,7 @@ public class ReservaResource {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({ "Admin" })
     public Response findById(@PathParam("id") Long id) {
         LOGGER.info("Buscando reserva com ID: " + id);
         Response response = Response.ok(service.findById(id)).build();
@@ -85,7 +92,8 @@ public class ReservaResource {
     }
 
     @GET
-    @Path("/historico")
+    @Path("/search/historico/{historico}")
+    @RolesAllowed({ "User", "Admin" })
     public Response historicoReservas() {
         try {
             Long usuarioId = Long.parseLong(jwt.getSubject());

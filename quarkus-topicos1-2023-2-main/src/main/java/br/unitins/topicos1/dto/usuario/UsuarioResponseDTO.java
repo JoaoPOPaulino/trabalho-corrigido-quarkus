@@ -10,6 +10,7 @@ import br.unitins.topicos1.model.Usuario;
 public record UsuarioResponseDTO(
                 Long id,
                 String nome,
+                String email,
                 String login,
                 String senha,
                 Perfil perfil,
@@ -19,6 +20,7 @@ public record UsuarioResponseDTO(
                 return new UsuarioResponseDTO(
                                 usuario.getId(),
                                 usuario.getNome(),
+                                usuario.getEmail(),
                                 usuario.getLogin(),
                                 usuario.getSenha(),
                                 usuario.getPerfil(),

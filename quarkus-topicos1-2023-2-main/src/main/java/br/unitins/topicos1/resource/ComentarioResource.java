@@ -8,6 +8,7 @@ import org.jboss.logging.Logger;
 import br.unitins.topicos1.dto.comentario.ComentarioDTO;
 import br.unitins.topicos1.dto.comentario.ComentarioResponseDTO;
 import br.unitins.topicos1.service.comentario.ComentarioService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
@@ -35,6 +36,7 @@ public class ComentarioResource {
     private static final Logger LOGGER = Logger.getLogger(ComentarioResource.class.getName());
 
     @POST
+    @RolesAllowed({ "User", "Admin" })
     public Response insert(ComentarioDTO dto) {
         LOGGER.info("Inserindo novo comentário");
         Response response = Response.status(Status.CREATED).entity(service.insert(dto)).build();
@@ -45,6 +47,7 @@ public class ComentarioResource {
     @PUT
     @Transactional
     @Path("/{id}")
+    @RolesAllowed({ "User", "Admin" })
     public Response update(ComentarioDTO dto, @PathParam("id") Long id) {
         LOGGER.info("Atualizando comentário com ID: " + id);
         try {
@@ -60,6 +63,7 @@ public class ComentarioResource {
     @DELETE
     @Transactional
     @Path("/{id}")
+    @RolesAllowed({ "User", "Admin" })
     public Response delete(@PathParam("id") Long id) {
         LOGGER.info("Excluindo comentário com ID: " + id);
         service.delete(id);
@@ -68,6 +72,7 @@ public class ComentarioResource {
     }
 
     @GET
+    @RolesAllowed({ "User", "Admin" })
     public Response findAll() {
         LOGGER.info("Buscando todos os comentários");
         Response response = Response.ok(service.findAll()).build();
@@ -77,6 +82,7 @@ public class ComentarioResource {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({ "Admin" })
     public Response findById(@PathParam("id") Long id) {
         LOGGER.info("Buscando comentário com ID: " + id);
         ComentarioResponseDTO dto = service.findById(id);
@@ -90,6 +96,7 @@ public class ComentarioResource {
 
     @GET
     @Path("/data")
+    @RolesAllowed({ "User", "Admin" })
     public Response findComentariosByData(@QueryParam("data") String dataStr) {
         LOGGER.info("Buscando comentários pela data: " + dataStr);
         try {
