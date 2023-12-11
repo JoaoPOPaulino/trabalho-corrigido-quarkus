@@ -42,6 +42,7 @@ public class UsuarioResourceTest {
 
                 UsuarioDTO dto = new UsuarioDTO(
                                 "Mark Zuckerberg Insert",
+                                "quinho@hotmail.com",
                                 "marquinho",
                                 "333",
                                 1,
@@ -66,12 +67,13 @@ public class UsuarioResourceTest {
                 telefones.add(new TelefoneDTO("63", "5555-5555"));
 
                 UsuarioDTO novoUsuario = new UsuarioDTO(
-                                "Usuário Teste", "usuario_teste", "senha123", 1, telefones,
+                                "Usuário Teste", "user@hotmail.com", "usuario_teste", "senha123", 1, telefones,
                                 new EnderecoDTO("Estado", "Cidade", "Quadra", "Rua", 123));
                 UsuarioResponseDTO usuarioInserido = usuarioService.insert(novoUsuario);
 
                 UsuarioDTO usuarioAtualizado = new UsuarioDTO(
-                                "Usuário Teste Atualizado", "usuario_teste", "senha123", 1, new ArrayList<>(),
+                                "Usuário Teste Atualizado", "user@hotmail.com", "usuario_teste", "senha123", 1,
+                                new ArrayList<>(),
                                 new EnderecoDTO("Estado", "Cidade", "Quadra", "Rua", 123));
                 given()
                                 .contentType(ContentType.JSON)
@@ -91,6 +93,7 @@ public class UsuarioResourceTest {
 
                 UsuarioDTO dto = new UsuarioDTO(
                                 "Mark Zuckerberg Delete",
+                                "user@hotmail.com",
                                 "marquinho",
                                 "333",
                                 1,
